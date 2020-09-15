@@ -17,7 +17,7 @@ except ImportError:
     print(f"*** CCXT is not found!! ***")
     sys.exit(1)
 CCXT_VERSION = 'builtin'
-if not os.path.exists('ccxt'):
+"""if not os.path.exists('ccxt'):
     CCXT_VERSION = 'unknown'
     try:
         import pip
@@ -30,6 +30,7 @@ if not os.path.exists('ccxt'):
                 print(f"Recommend CCXT 1.17.376 or above: now={CCXT_VERSION}")
     except:
         pass
+"""
 
 ## setup
 from logging import getLogger

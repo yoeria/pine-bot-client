@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pine-bot-client.py init",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "init",
+                "pine_scripts/heikin_ashi-fma-sma.pine"
+            ],
+            "showReturnValue": true
+        }
+    ]
+}

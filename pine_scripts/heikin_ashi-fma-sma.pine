@@ -1,0 +1,32 @@
+//@version=2
+// Based on Heikin Ashi Strategy v2 by breizh29
+
+strategy("Heikin Ashi Strategy [Krypt]", shorttitle="HA Strategy [Krypt]", overlay=true)
+
+res = input(title="Heikin Ashi Candle Time Frame", type=resolution, defval="60")
+hshift = input(1,title="Heikin Ashi Candle Time Frame Shift")
+res1 = input(title="Heikin Ashi EMA Time Frame", type=resolution, defval="180")
+mhshift = input(0,title="Heikin Ashi EMA Time Frame Shift")
+fama = input(1,"Heikin Ashi EMA Period")
+test = input(1,"Heikin Ashi EMA Shift")
+sloma = input(30,"Slow EMA Period")
+slomas = input(1,"Slow EMA Shift")
+logtransform = input(false, "Log Transform")
+stoploss = input(true, "Stop Loss")
+showplots = input(true, "Show Plots")
+
+ha_t = heikinashi(tickerid)
+ha_close = security(ha_t, res, logtransform ? log(close[hshift]) : close[hshift])
+mha_close = security(ha_t, res1, logtransform ? log(close[mhshift]) : close[mhshift])
+
+fma = ema(mha_close[test], fama)
+sma = ema(ha_close[slomas], sloma)
+
+plot(showplots ? (logtransform ? exp(fma) : fma) : na, title="MA", color=#0094ff, linewidth=2, style=line)
+plot(showplots ? (logtransform ? exp(sma) : sma) : na, title="SMA", color=#ff6a00, linewidth=2, style=line)
+
+golong = crossover(fma, sma)
+goshort = crossunder(fma, sma)
+
+strategy.entry("Buy", strategy.long, when=golong, stop=(stoploss ? high+syminfo.mintick : na))
+strategy.entry("Sell", strategy.short, when=goshort, stop=(stoploss ? low-syminfo.mintick : na))
